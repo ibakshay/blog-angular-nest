@@ -4,7 +4,7 @@ import {AppService} from './app.service'
 import {ConfigModule} from '@nestjs/config'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {UserModule} from './user/user.module';
-import {getConnectionOptions} from 'typeorm'
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,7 +22,8 @@ import {getConnectionOptions} from 'typeorm'
       retryAttempts: 10,
       autoLoadEntities: true,
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [ AppController ],
   providers: [ AppService ],

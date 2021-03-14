@@ -9,7 +9,7 @@ export class UserController {
 
     @Post()
     createUser(@Body() user: User) {
-        return this.userService.create(user)
+        return this.userService.create(user).pipe()
     }
 
     @Get('')
