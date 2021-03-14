@@ -1,0 +1,11 @@
+{
+    "name": "default",
+    "host": "localhost",
+    "port": 5432,
+    "type": "postgres",
+    "entities": [
+        "dist/user/*.entity{.ts,.js}"
+    ],
+    "synchronize": true,
+    "url": "postgres://postgresuser:password@postgres:5432/postgresdb"
+}
