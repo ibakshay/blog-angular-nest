@@ -4,7 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { RolesGuard } from 'src/auth/guards/roles-guard';
-import {User} from './user.interface';
+import { User, UserRole } from './user.interface';
 import {UserService} from './user.service';
 
 @Controller('users')
@@ -28,7 +28,7 @@ export class UserController {
         )
     }
 
-    @hasRoles('Admin')
+    @hasRoles(UserRole.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('')
     findAllUsers() {
