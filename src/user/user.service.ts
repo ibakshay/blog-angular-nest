@@ -19,8 +19,9 @@ export class UserService {
                 const newUser = new UserEntity()
                 newUser.email = user.email
                 newUser.name = user.name
-                newUser.email = user.email
+                newUser.username = user.username
                 newUser.password = passwordHash
+                console.log("afsdfsdfsdf")
                 return from(this.userRepository.save(newUser)).pipe(
                     map((user: User) => {
                         const {password, ...result} = user
