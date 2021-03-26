@@ -1,4 +1,5 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
@@ -28,6 +29,25 @@ export class UserController {
         )
     }
 
+
+    @Get()
+    index(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('username') username: string
+    ): Observable<Pagination<User>> {
+        limit = limit > 100 ? 100 : limit;
+
+        if (username === null || username === undefined) {
+            return this.userService.paginate({ page: +page, limit: +limit, route: 'http://localhost:3000/api/users' });
+        } //else {
+        //     return this.userService.paginateFilterByUsername(
+        //         { page: Number(page), limit: Number(limit), route: 'http://localhost:3000/api/users' },
+        //         { username }
+        //     )
+        // }
+    }
+
     @hasRoles(UserRole.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('')
@@ -49,5 +69,12 @@ export class UserController {
     @Put(':id')
     updateUser(@Param('id') id: string, @Body() user: User) {
         return this.userService.updateOne(+id, user)
+    }
+
+    @hasRoles(UserRole.ADMIN)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Put(':id/role')
+    updateRoleOfUser(@Param('id') id: string, @Body() user: User): Observable<User> {
+        return this.userService.updateRoleOfUser(+id, user)
     }
 }
